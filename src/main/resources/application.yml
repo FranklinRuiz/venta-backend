@@ -1,0 +1,32 @@
+server:
+  port : 8081
+
+spring:
+  application:
+    name: backend-venta
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=utp_venta
+    username: root
+    password: 12345678
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    hikari:
+      connection-test-query: SELECT 1
+      minimum-idle: 1
+      maximum-pool-size: 3
+
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    hibernate:
+      ddl-auto: none
+      hibernate:
+        naming:
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  header: Authorization
+  secret: cHJ1ZWJhLWRlbW8tZnJhbmtsaW4tdXBuLXNlZ3VyaWRhZC1zcHJpbmdib290LWp3dC1wcnVlYmEtcHJ1ZWJhLXBydWViYQ==
+  token-validity-in-seconds: 86400
