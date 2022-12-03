@@ -1,7 +1,7 @@
 package pe.utp.venta.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,17 @@ public class BoletaController {
 
     private final BoletaService boletaService;
 
-    @GetMapping("/generar/{ventaId}")
-    public ByteArrayInputStream getBoleta(@PathVariable Long ventaId) {
-        ByteArrayInputStream resource = boletaService.generarBoleta();
+    @GetMapping(value = "/generar/{ventaId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> generarBoleta(@PathVariable Long ventaId) {
+        ByteArrayInputStream resource = boletaService.generarBoleta(ventaId);
 
-        return resource;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=boleta.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(resource));
     }
 }
